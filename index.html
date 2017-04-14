@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Memory Game</title>
+  <script src="//code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous">
+  </script>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  <style>
+    .row > div {
+      height: 10rem;
+      background-color: lightgray;
+    }
+    .row {
+      margin: 2rem;
+    }
+    #display, #reset {
+      background-color: white;
+      height: 3rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+  <script>
+    window.onload = function(){
+      // set up a name array
+      nameArr = [[],[],[],[]];
+      for (var i=0; i<4; i++) {
+        for (var j=0; j<4; j++) {
+          nameArr[i][j] = document.getElementById("no"+i+j);
+        }
+      }
+      // randomly assign colors using name array
+      var colorObj = {
+        1: "purple",
+        2: "blue",
+        3: "green",
+        4: "yellow",
+        5: "red",
+        6: "pink",
+        7: "orange",
+        8: "lightblue"
+      }
+      var colorCount = {
+        "purple": 0,
+        "blue": 0, 
+        "green": 0,
+        "yellow": 0,
+        "red": 0,
+        "pink": 0,
+        "orange": 0,
+        "lightblue": 0
+      }
+      // if class is down, gray. if class is up, use this code
+      upObj = {}
+      for (var i=0; i<4; i++) {
+        for (var j=0; j<4; j++) {
+          var random = Math.floor(Math.random()*8) + 1;
+          while(colorCount[colorObj[random]] > 1) {
+            // need a new random number
+            random = Math.floor(Math.random()*8) + 1;
+          } 
+          upObj[nameArr[i][j].getAttribute("id")] = colorObj[random];
+          colorCount[colorObj[random]] += 1;
+        }
+      }
+      // change color on click
+      var cells = document.querySelectorAll(".row > div");
+      var endGameCounter = 0;
+      var turnsStart = 10;
+      var turns = turnsStart;
+      var display = document.getElementById("display");
+      display.innerText = "You have "+turns+" turns remaining"
+      var button = document.querySelector("#btn");
+      var prevColor = Math.random();
+      var disabled = false;
+      
+      for(i=0; i<cells.length; i++) {
+        cells[i].addEventListener("click", function(event){
+          if(disabled === false){
+            if (event.target.getAttribute("class") === "col-xs-2 col-xs-offset-1 down") {
+              event.target.setAttribute("class", "col-xs-2 col-xs-offset-1 up");
+              event.target.style.backgroundColor = upObj[event.target.getAttribute("id")];
+              endGameCounter += 1;
+              if (event.target.style.backgroundColor === prevColor && endGameCounter % 2===0) {
+              } else if (event.target.style.backgroundColor !== prevColor && endGameCounter % 2===0) {
+                disabled = true;
+                setTimeout(function(){
+                    flipBack();
+                },1000);
+              } 
+              prevColor = event.target.style.backgroundColor;
+            } 
+            if (endGameCounter === 16) {
+              youWin();
+            }
+          }
+        });
+      }
+      
+      // end game if all are up
+      function flipBack(){
+        for (var i=0; i<4; i++) {
+          for (var j=0; j<4; j++) {
+            nameArr[i][j].setAttribute("class", "col-xs-2 col-xs-offset-1 down");
+            nameArr[i][j].style.backgroundColor = "lightgray";
+          }
+        }
+        endGameCounter = 0;
+        disabled = false;
+        turns -= 1;
+        if(turns === 1){
+          display.innerText = "Careful! Only one turn remaining."
+          display.setAttribute("class", "col-xs-12 text-center alert alert-warning");
+        } else {
+          display.innerText = "You have "+turns+" turns remaining."
+        }
+        if (turns < 1) {
+          youLose();
+        }
+      }
+      function youWin(){
+        setTimeout(function(){
+          display.setAttribute("class", "col-xs-12 text-center alert alert-success");
+          display.innerText = "You win with " +(turnsStart-turns) + " turns remaining!"
+          button.innerHTML = "Play again"
+        },250);
+      }
+      function youLose(){ 
+        display.setAttribute("class", "col-xs-12 text-center alert alert-danger");
+        display.innerText = "You lose!"
+        button.innerHTML = "Try again"
+      }
+      // set up reset button
+      button.addEventListener("click", function(event){
+        location.reload();
+      });
+    };
+  </script>
+</head>
+<body>
+  <h1 class="header text-center">How good is your memory?
+  </h1>
+  <div class="container">
+    <div class="row">
+      <div id="no00" class="col-xs-2 col-xs-offset-1 down"></div>
+      <div id="no01" class="col-xs-2 col-xs-offset-1 down"></div>
+      <div id="no02" class="col-xs-2 col-xs-offset-1 down"></div>
+      <div id="no03" class="col-xs-2 col-xs-offset-1 down"></div>
+    </div>
+
+    <div class="row">
+      <div id="no10" class="col-xs-2 col-xs-offset-1 down"></div>
+      <div id="no11" class="col-xs-2 col-xs-offset-1 down"></div>
+      <div id="no12" class="col-xs-2 col-xs-offset-1 down"></div>
+      <div id="no13" class="col-xs-2 col-xs-offset-1 down"></div>
+    </div>
+
+    <div class="row">
+      <div id="no20" class="col-xs-2 col-xs-offset-1 down"></div>
+      <div id="no21" class="col-xs-2 col-xs-offset-1 down"></div>
+      <div id="no22" class="col-xs-2 col-xs-offset-1 down"></div>
+      <div id="no23" class="col-xs-2 col-xs-offset-1 down"></div>
+    </div>
+
+    <div class="row">
+      <div id="no30" class="col-xs-2 col-xs-offset-1 down"></div>
+      <div id="no31" class="col-xs-2 col-xs-offset-1 down"></div>
+      <div id="no32" class="col-xs-2 col-xs-offset-1 down"></div>
+      <div id="no33" class="col-xs-2 col-xs-offset-1 down"></div>
+    </div>
+
+  </div>
+  <hr>
+  <div class="container">
+    <div class="row bottom">
+      <div id="display" class="col-xs-12 text-center alert alert-info" role="alert"></div>
+      <div id="reset" class="col-xs-12 text-center"><button id="btn" type="submit" class="btn btn-default">Reset</button></div>
+    </div>
+  </div>
+</body>
+</html>
