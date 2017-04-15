@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
   <style>
-
     .row > div > div {
       height: 10rem;
       background-color: lightgray;
@@ -20,46 +19,38 @@
 
     #display, #reset {
       background-color: white;
-      height: 3rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #display, #btn {
-      font-size: 2rem;
-      height: 4rem;
     }
 
     @media (max-width: 768px) {
-      #btn, #display,  #reset {
-        font-size: 3rem;
-        height: 6rem;
+      #btn, #display, #reset, .header {
+        font-size: 5rem;
+        line-height: 6rem;
+        margin: 3rem 0;
       }
     }
 
     @media (min-width: 769px) {
-      #btn, #display,  #reset {
+      #btn, #display, #reset {
         font-size: 2rem;
         line-height: 2rem;
+
       }
     }
 
+    .alert {
+      display:inline-block;
+    }
   </style>
   <script>
     window.onload = function(){
-
       // set up a name array
-
       nameArr = [[],[],[],[]];
       for (var i=0; i<4; i++) {
         for (var j=0; j<4; j++) {
           nameArr[i][j] = document.getElementById("no"+i+j);
         }
       }
-
       // randomly assign colors using name array
-
       var colorObj = {
         1: "purple",
         2: "blue",
@@ -70,7 +61,6 @@
         7: "orange",
         8: "lightblue"
       }
-
       var colorCount = {
         "purple": 0,
         "blue": 0, 
@@ -81,9 +71,7 @@
         "orange": 0,
         "lightblue": 0
       }
-
       // if class is down, gray. if class is up, use this code
-
       upObj = {}
       for (var i=0; i<4; i++) {
         for (var j=0; j<4; j++) {
@@ -96,9 +84,7 @@
           colorCount[colorObj[random]] += 1;
         }
       }
-
       // change color on click
-
       var cells = document.querySelectorAll(".row > div > div");
       var endGameCounter = 0;
       var turnsStart = 10;
@@ -108,7 +94,6 @@
       var button = document.querySelector("#btn");
       var prevColor = Math.random();
       var disabled = false;
-
       
       for(i=0; i<cells.length; i++) {
         cells[i].addEventListener("click", function(event){
@@ -134,7 +119,6 @@
       }
       
       // end game if all are up
-
       function flipBack(){
         for (var i=0; i<4; i++) {
           for (var j=0; j<4; j++) {
@@ -155,7 +139,6 @@
           youLose();
         }
       }
-
       function youWin(){
         setTimeout(function(){
           display.setAttribute("class", "col-xs-12 text-center alert alert-success");
@@ -163,20 +146,15 @@
           button.innerHTML = "Play again"
         },250);
       }
-
       function youLose(){ 
         display.setAttribute("class", "col-xs-12 text-center alert alert-danger");
         display.innerText = "You lose!"
         button.innerHTML = "Try again"
       }
-
-
       // set up reset button
-
       button.addEventListener("click", function(event){
         location.reload();
       });
-
     };
   </script>
 </head>
