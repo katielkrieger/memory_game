@@ -25,6 +25,12 @@
       align-items: center;
       justify-content: center;
     }
+
+    #display, #btn {
+      font-size: 2rem;
+      height: 4rem;
+    }
+
   </style>
   <script>
     window.onload = function(){
@@ -79,7 +85,7 @@
 
       // change color on click
 
-      var cells = document.querySelectorAll(".row > div");
+      var cells = document.querySelectorAll(".row > div > div");
       var endGameCounter = 0;
       var turnsStart = 10;
       var turns = turnsStart;
@@ -93,8 +99,8 @@
       for(i=0; i<cells.length; i++) {
         cells[i].addEventListener("click", function(event){
           if(disabled === false){
-            if (event.target.getAttribute("class") === "col-xs-2 col-xs-offset-1 down") {
-              event.target.setAttribute("class", "col-xs-2 col-xs-offset-1 up");
+            if (event.target.getAttribute("class") === "col-xs-12 down") {
+              event.target.setAttribute("class", "col-xs-12 up");
               event.target.style.backgroundColor = upObj[event.target.getAttribute("id")];
               endGameCounter += 1;
               if (event.target.style.backgroundColor === prevColor && endGameCounter % 2===0) {
@@ -118,7 +124,7 @@
       function flipBack(){
         for (var i=0; i<4; i++) {
           for (var j=0; j<4; j++) {
-            nameArr[i][j].setAttribute("class", "col-xs-2 col-xs-offset-1 down");
+            nameArr[i][j].setAttribute("class", "col-xs-12 down");
             nameArr[i][j].style.backgroundColor = "lightgray";
           }
         }
@@ -165,31 +171,63 @@
   </h1>
   <div class="container">
     <div class="row">
-      <div id="no00" class="col-xs-2 col-xs-offset-1 down"></div>
-      <div id="no01" class="col-xs-2 col-xs-offset-1 down"></div>
-      <div id="no02" class="col-xs-2 col-xs-offset-1 down"></div>
-      <div id="no03" class="col-xs-2 col-xs-offset-1 down"></div>
+      <div class="col-xs-3">
+        <div id="no00" class="col-xs-12 down"></div>
+      </div>
+      <div class="col-xs-3">
+        <div id="no01" class="col-xs-12 down"></div>
+      </div>
+      <div class="col-xs-3">
+        <div id="no02" class="col-xs-12 down"></div>
+      </div>
+      <div class="col-xs-3">
+        <div id="no03" class="col-xs-12 down"></div>
+      </div>
     </div>
 
     <div class="row">
-      <div id="no10" class="col-xs-2 col-xs-offset-1 down"></div>
-      <div id="no11" class="col-xs-2 col-xs-offset-1 down"></div>
-      <div id="no12" class="col-xs-2 col-xs-offset-1 down"></div>
-      <div id="no13" class="col-xs-2 col-xs-offset-1 down"></div>
+      <div class="col-xs-3">
+        <div id="no10" class="col-xs-12 down"></div>
+      </div>
+      <div class="col-xs-3">
+        <div id="no11" class="col-xs-12 down"></div>
+      </div>
+      <div class="col-xs-3">
+        <div id="no12" class="col-xs-12 down"></div>
+      </div>
+      <div class="col-xs-3">
+        <div id="no13" class="col-xs-12 down"></div>
+      </div>
     </div>
 
     <div class="row">
-      <div id="no20" class="col-xs-2 col-xs-offset-1 down"></div>
-      <div id="no21" class="col-xs-2 col-xs-offset-1 down"></div>
-      <div id="no22" class="col-xs-2 col-xs-offset-1 down"></div>
-      <div id="no23" class="col-xs-2 col-xs-offset-1 down"></div>
+      <div class="col-xs-3">
+        <div id="no20" class="col-xs-12 down"></div>
+      </div>
+      <div class="col-xs-3">
+        <div id="no21" class="col-xs-12 down"></div>
+      </div>
+      <div class="col-xs-3">
+        <div id="no22" class="col-xs-12 down"></div>
+      </div>
+      <div class="col-xs-3">
+        <div id="no23" class="col-xs-12 down"></div>
+      </div>
     </div>
 
     <div class="row">
-      <div id="no30" class="col-xs-2 col-xs-offset-1 down"></div>
-      <div id="no31" class="col-xs-2 col-xs-offset-1 down"></div>
-      <div id="no32" class="col-xs-2 col-xs-offset-1 down"></div>
-      <div id="no33" class="col-xs-2 col-xs-offset-1 down"></div>
+      <div class="col-xs-3">
+        <div id="no30" class="col-xs-12 down"></div>
+      </div>
+      <div class="col-xs-3">
+        <div id="no31" class="col-xs-12 down"></div>
+      </div>
+      <div class="col-xs-3">
+        <div id="no32" class="col-xs-12 down"></div>
+      </div>
+      <div class="col-xs-3">
+        <div id="no33" class="col-xs-12 down"></div>
+      </div>
     </div>
 
   </div>
