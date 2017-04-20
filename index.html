@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
   <title>Memory Game</title>
-  <script src="//code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous">
+  <script src="http://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous">
   </script>
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
   <style>
 
     .row > div > div {
@@ -49,6 +49,7 @@
   </style>
   <script>
     window.onload = function(){
+
       // set up a name array
       nameArr = [[],[],[],[]];
       for (var i=0; i<4; i++) {
@@ -56,6 +57,7 @@
           nameArr[i][j] = document.getElementById("no"+i+j);
         }
       }
+
       // randomly assign colors using name array
       var colorObj = {
         1: "purple",
@@ -77,7 +79,8 @@
         "orange": 0,
         "lightblue": 0
       }
-      // if class is down, gray. if class is up, use this code
+
+      // if class is down, gray. if class is up, use this id:
       upObj = {}
       for (var i=0; i<4; i++) {
         for (var j=0; j<4; j++) {
@@ -90,6 +93,7 @@
           colorCount[colorObj[random]] += 1;
         }
       }
+
       // change color on click
       var cells = document.querySelectorAll(".row > div > div");
       var endGameCounter = 0;
@@ -98,7 +102,8 @@
       var display = document.getElementById("display");
       display.innerText = "You have "+turns+" turns remaining"
       var button = document.querySelector("#btn");
-      var prevColor = Math.random();
+      var prevColor = "lightgray";
+      var currentColor = "lightgray";
       var disabled = false;
       
       for(i=0; i<cells.length; i++) {
@@ -108,30 +113,50 @@
               event.target.setAttribute("class", "col-xs-12 up");
               event.target.style.backgroundColor = upObj[event.target.getAttribute("id")];
               endGameCounter += 1;
-              if (event.target.style.backgroundColor === prevColor && endGameCounter % 2===0) {
-              } else if (event.target.style.backgroundColor !== prevColor && endGameCounter % 2===0) {
+              currentColor = event.target.style.backgroundColor;
+              if (currentColor === prevColor && endGameCounter % 2===0) {
+                // no need to reassign prevColor
+              } else if (currentColor !== prevColor && endGameCounter % 2===0) {
                 disabled = true;
                 setTimeout(function(){
                     flipBack();
                 },1000);
               } 
-              prevColor = event.target.style.backgroundColor;
             } 
             if (endGameCounter === 16) {
               youWin();
+            }
+            if (endGameCounter % 2 !== 0) {
+              prevColor = currentColor;
             }
           }
         });
       }
       
-      // end game if all are up
+      // flip back if last two cards don't match
       function flipBack(){
+      // option 1 (harder): flip back all cards
+      /*
         for (var i=0; i<4; i++) {
           for (var j=0; j<4; j++) {
             nameArr[i][j].setAttribute("class", "col-xs-12 down");
             nameArr[i][j].style.backgroundColor = "lightgray";
           }
         }
+        */
+
+        // option 2 (easier): flip back the last two cards
+        for (var i=0; i<4; i++) {
+          for (var j=0; j<4; j++) {
+            if(nameArr[i][j].style.backgroundColor === prevColor ||
+              nameArr[i][j].style.backgroundColor === currentColor) {
+              nameArr[i][j].setAttribute("class", "col-xs-12 down");
+              nameArr[i][j].style.backgroundColor = "lightgray";
+            }
+          }
+        }
+        // end option 2
+        prevColor = currentColor;
         endGameCounter = 0;
         disabled = false;
         turns -= 1;
@@ -145,6 +170,8 @@
           youLose();
         }
       }
+
+      // you win if all cards are face up
       function youWin(){
         setTimeout(function(){
           display.setAttribute("class", "col-xs-12 text-center alert alert-success");
@@ -152,15 +179,19 @@
           button.innerHTML = "Play again"
         },250);
       }
+
+      // you lose if you run out of turns
       function youLose(){ 
         display.setAttribute("class", "col-xs-12 text-center alert alert-danger");
         display.innerText = "You lose!"
         button.innerHTML = "Try again"
       }
+
       // set up reset button
       button.addEventListener("click", function(event){
         location.reload();
       });
+
     };
   </script>
 </head>
