@@ -51,7 +51,7 @@
     window.onload = function(){
 
       // set up a name array
-      nameArr = [[],[],[],[]];
+      var nameArr = [[],[],[],[]];
       for (var i=0; i<4; i++) {
         for (var j=0; j<4; j++) {
           nameArr[i][j] = document.getElementById("no"+i+j);
@@ -157,7 +157,7 @@
         }
         // end option 2
         prevColor = currentColor;
-        endGameCounter = 0;
+        endGameCounter -= 2;
         disabled = false;
         turns -= 1;
         if(turns === 1){
